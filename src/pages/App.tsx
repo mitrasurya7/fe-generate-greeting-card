@@ -18,6 +18,7 @@ function App() {
   const [initialFile, setInitialFile] = useState<boolean>(false);
   const textObjectsRef = useRef<{ dear?: fabric.Text; message?: fabric.Text; from?: fabric.Text }>({});
   const [errorMessage, setErrorMessage] = useState<{key: "dear" | "message" | "from" | "image", message: string}[]>([]);
+  
 
   useEffect(() => {
     if (!canvasRef.current || !initialFile) return;
@@ -120,17 +121,18 @@ function App() {
   }, [from]);
 
   return (
-    <main className="container lg:w-3/5  w-full min-h-screen mx-auto">
+    <main className="container lg:w-3/5  min-h-screen mx-auto">
       <Card>
         <h1 className="lg:text-3xl text-2xl font-semibold py-2">Gift Card</h1>
         <div className="my-5 border-t border-gray-300 border-b">
         {initialFile && (
-          <div className="flex justify-center my-2">
+          <div className="flex justify-center my-2 mx-auto">
             <canvas
               ref={canvasRef}
-              width={350} 
-              height={350} 
-              className="border border-gray-300 w-full max-w-xs"
+              id="canvas"
+              width={400}
+              height={400}
+              className="border border-gray-300 w-full lg:w-1/2 h-96"
             />
           </div>
         )}
@@ -142,6 +144,7 @@ function App() {
                 if (e.target?.result) {
                   setTimeout(() => {
                     if (!fabricCanvasRef.current) return;
+                    fabricCanvasRef.current.clear();
                     fabric.Image.fromURL(
                       e.target!.result as string,
                       (image) => {
